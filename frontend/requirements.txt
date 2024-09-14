@@ -1,0 +1,8 @@
+streamlit
+requests
+joblib
+numpy
+scikit-learn
+openai
+sqlalchemy
+werkzeug
