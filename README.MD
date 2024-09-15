@@ -46,17 +46,6 @@ Las dependencias para el frontend están listadas en `frontend/requirements.txt`
 
    Esto iniciará el servidor Flask en `http://127.0.0.1:5000`.
 
-
-4. **Crear Nuevos Usuarios**
-
-      Puedes crear nuevos usuarios en el backend utilizando el siguiente comando:
-
-    ```bash
-    curl -X POST http://localhost:5000/api/add_user \
-    -H "Content-Type: application/json" \
-    -d '{"username": "user", "password": "pass"}'
-   ```
-
 ### 2. Configurar el Frontend
 
 1. **Navega a la carpeta del frontend:**
