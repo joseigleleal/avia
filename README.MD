@@ -2,10 +2,12 @@
 
 Este proyecto consiste en una aplicación que permite a los usuarios completar una encuesta sobre su salud y otros aspectos, y utiliza un modelo de machine learning para predecir la fragilidad. El proyecto se divide en dos partes principales: el backend y el frontend.
 
+con el cambio a flask-html
+
 ## Estructura del Proyecto
 
 - `backend/` - Contiene la API que maneja la lógica del servidor, la conexión a la base de datos y el procesamiento de datos.
-- `frontend/` - Contiene la interfaz de usuario construida con Streamlit que se comunica con el backend.
+- `frontend/` - Contiene la interfaz de usuario construida con Flask que se comunica con el backend.
 
 ## Requisitos
 
@@ -19,7 +21,7 @@ Las dependencias para el backend están listadas en `backend/requirements.txt`.
 
 ### Frontend
 
-El frontend está construido con Streamlit y utiliza `requests` para comunicarse con el backend.
+El frontend está construido con Flask y utiliza `requests` para comunicarse con el backend.
 
 #### Dependencias
 
@@ -46,16 +48,15 @@ Las dependencias para el frontend están listadas en `frontend/requirements.txt`
 
    Esto iniciará el servidor Flask en `http://127.0.0.1:5000`.
 
-
 4. **Crear Nuevos Usuarios**
 
-      Puedes crear nuevos usuarios en el backend utilizando el siguiente comando:
+   Puedes crear nuevos usuarios en el backend utilizando el siguiente comando:
 
     ```bash
     curl -X POST http://localhost:5000/api/add_user \
     -H "Content-Type: application/json" \
     -d '{"username": "user", "password": "pass"}'
-   ```
+    ```
 
 ### 2. Configurar el Frontend
 
@@ -71,7 +72,7 @@ Las dependencias para el frontend están listadas en `frontend/requirements.txt`
 
 3. **Ejecuta el frontend:**
     ```bash
-    streamlit run app.py
+    python3.9 app.py
     ```
 
    Esto abrirá la interfaz de usuario en tu navegador predeterminado.
@@ -90,11 +91,18 @@ El backend proporciona una API RESTful que incluye las siguientes rutas:
 
 ### Frontend
 
-El frontend es una aplicación web construida con Streamlit que permite a los usuarios:
+El frontend es una aplicación web construida con Flask que permite a los usuarios:
 
 - Iniciar sesión.
 - Completar una encuesta.
 - Ver la predicción de fragilidad basada en sus respuestas.
+
+El archivo `frontend/app.py` contiene la lógica para manejar el inicio de sesión, la encuesta y las predicciones. Se deben utilizar las siguientes rutas en Flask:
+
+- `/` - Página de inicio.
+- `/login` - Página de inicio de sesión.
+- `/survey` - Página de la encuesta.
+- `/logout` - Función para cerrar sesión.
 
 ## Contribución
 
