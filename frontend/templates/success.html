@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Encuesta Enviada</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>¡Encuesta Enviada!</h1>
+    <p>Gracias por completar la encuesta. Su predicción ha sido registrada.</p>
+    <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+</body>
+</html>

@@ -1,8 +1,6 @@
-from flask import Flask, request, \
-    jsonify  # Flask para crear la aplicación web, request para manejar solicitudes HTTP, y jsonify para retornar respuestas JSON
+from flask import Flask, request, jsonify  # Flask para crear la aplicación web, request para manejar solicitudes HTTP, y jsonify para retornar respuestas JSON
 from flask_cors import CORS  # CORS para permitir solicitudes desde diferentes orígenes
-from database import init_db, save_response, verify_user, User, \
-    Session  # Funciones y clases relacionadas con la base de datos
+from database import init_db, save_response, verify_user, User, Session  # Funciones y clases relacionadas con la base de datos
 from werkzeug.security import generate_password_hash  # Herramienta para generar contraseñas cifradas
 from model import predict_fragility  # Función para hacer predicciones de fragilidad
 import openai  # Biblioteca OpenAI para interactuar con sus modelos de IA
@@ -89,7 +87,6 @@ def predict_openai():
     )
     prediction = response.choices[0].text.strip()  # Obtener la predicción del modelo y eliminar espacios en blanco
     return jsonify({"prediction": prediction}), 200  # Devolver la predicción con código 200 (OK)
-
 
 # Ejecutar la aplicación en modo de depuración
 if __name__ == '__main__':

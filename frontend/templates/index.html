@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a AVIA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content">
+            <h1>Bienvenido a AVIA</h1>
+            <h2>Algoritmo de Validación de Independencia y Autonomía</h2>
+            <p>
+                Es un algoritmo de autocuidado focalizado en Adultos Mayores que, a partir de una breve encuesta, intenta predecir la evolución a fragilidad con cuatro años de anticipación y generar estrategias para prevenirla y mantener la autonomía por más tiempo.
+            </p>
+
+            <h3>¿Cómo funciona?</h3>
+            <ol>
+                <li>Crear un usuario. Puede crearlo la misma persona o su cuidador.</li>
+                <li>Completar la Encuesta.</li>
+                <li>Recibirá por correo electrónico un informe con recomendaciones para evitar la pérdida de autonomía y acceso a servicios de salud recomendados.</li>
+                <li>Se recomienda volver a completarlo cada 6 meses para seguir recibiendo consejos actualizados.</li>
+            </ol>
+
+            <h3>¿Qué es AVIA?</h3>
+            <p>
+                El Algoritmo de Validación de Independencia y Autonomía (AVIA) busca ayudar a prevenir fragilidad en adultos mayores a partir de una serie de preguntas ponderadas que utilizan un algoritmo que desarrolla modelos predictivos con cuatro años de anticipación.
+            </p>
+            <p>
+                La fragilidad es un deterioro progresivo del organismo vinculado con la edad que disminuye nuestras capacidades y nos hace más vulnerables a enfermedades y problemas de salud.
+            </p>
+            <p>
+                El algoritmo fue desarrollado a partir de una investigación realizada por Daniel Eduardo da Cunha Leme y Cesar de Oliveira, publicada en The Journals of Gerontology en mayo del 2023. Contamos con la colaboración del Municipio de Reconquista de la Provincia de Santa Fe en Argentina.
+            </p>
+
+            <h3>¿Por qué es importante prevenir la fragilidad?</h3>
+            <p>
+                El aumento de la expectativa de vida pone a nuestras sociedades frente al desafío de las tareas de cuidado. La fragilidad implica un aumento en los costos del cuidado de la salud y un impacto en las familias, principalmente en las mujeres, quienes asumen la mayor parte de las tareas de cuidado no remuneradas.
+            </p>
+
+            <p>
+                AVIA fue desarrollado en el marco del Laboratorio de Innovación Ciudadana impulsado por la Secretaría General Iberoamericana y la Universidad de A Coruña.
+            </p>
+        </div>
+
+        <!-- Botón de Login -->
+        <div class="button-container">
+            <a href="{{ url_for('login_page') }}" class="login-button">Login</a>
+        </div>
+    </div>
+</body>
+</html>
