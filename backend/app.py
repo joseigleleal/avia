@@ -1,93 +1,154 @@
-from flask import Flask, request, jsonify  # Flask para crear la aplicación web, request para manejar solicitudes HTTP, y jsonify para retornar respuestas JSON
-from flask_cors import CORS  # CORS para permitir solicitudes desde diferentes orígenes
-from database import init_db, save_response, verify_user, User, Session  # Funciones y clases relacionadas con la base de datos
-from werkzeug.security import generate_password_hash  # Herramienta para generar contraseñas cifradas
-from model import predict_fragility  # Función para hacer predicciones de fragilidad
-import openai  # Biblioteca OpenAI para interactuar con sus modelos de IA
+from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask_cors import CORS
+from werkzeug.security import generate_password_hash
+from database import init_db, save_response, verify_user, User, Session
 
-app = Flask(__name__)  # Crear la aplicación Flask
-CORS(app, resources={r"/api/*": {"origins": "*"}})  # Permitir todos los orígenes para rutas que comienzan con /api
+app = Flask(__name__, template_folder='frontend/templates', static_folder='frontend/static')
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-# Inicializar la base de datos llamando a la función init_db que probablemente configura la base de datos
+# Inicializar la base de datos al inicio
 init_db()
 
-# Configurar la clave de API de OpenAI para interactuar con su servicio
-openai.api_key = 'YOUR_OPENAI_API_KEY'  # Clave de API necesaria para autenticarse con OpenAI
+# Ruta para servir el formulario HTML
+@app.route('/')
+def index():
+    return render_template('index.html')
 
+@app.route('/survey')
+def survey():
+    return render_template('survey.html')
 
 # Ruta para manejar el inicio de sesión de los usuarios
 @app.route('/api/login', methods=['POST'])
 def login():
-    data = request.json  # Obtener los datos en formato JSON de la solicitud
-    username = data.get('username')  # Extraer el nombre de usuario del cuerpo de la solicitud
-    password = data.get('password')  # Extraer la contraseña del cuerpo de la solicitud
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
 
-    # Verificar si el usuario existe y la contraseña es correcta
     if verify_user(username, password):
-        return jsonify({"message": "Login successful"}), 200  # Respuesta exitosa con código 200 (OK)
+        return jsonify({"message": "Login successful"}), 200
     else:
-        return jsonify({"message": "Invalid credentials"}), 401  # Si falla, devolver un código 401 (No autorizado)
-
+        return jsonify({"message": "Invalid credentials"}), 401
 
 # Ruta para agregar un nuevo usuario
 @app.route('/api/add_user', methods=['POST'])
 def add_user():
-    data = request.json  # Obtener los datos de la solicitud en formato JSON
-    username = data.get('username')  # Extraer el nombre de usuario
-    password = data.get('password')  # Extraer la contraseña
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
 
-    # Verificar que ambos campos estén presentes
     if not username or not password:
-        return jsonify({"message": "Username and password are required"}), 400  # Si faltan datos, retornar un error 400
+        return jsonify({"message": "Username and password are required"}), 400
 
-    # Cifrar la contraseña utilizando SHA-256
     hashed_password = generate_password_hash(password, method='sha256')
-
-    # Crear una nueva instancia de usuario
     user = User(username=username, password=hashed_password)
-
-    # Crear una nueva sesión de base de datos
     session = Session()
+
     try:
-        session.add(user)  # Agregar el nuevo usuario a la sesión
-        session.commit()  # Confirmar la transacción en la base de datos
-        return jsonify({"message": "User added successfully"}), 201  # Respuesta exitosa con código 201 (creado)
+        session.add(user)
+        session.commit()
+        return jsonify({"message": "User added successfully"}), 201
     except Exception as e:
-        session.rollback()  # Si hay algún error, deshacer la transacción
-        return jsonify({"message": str(e)}), 400  # Devolver el error con código 400 (Solicitud incorrecta)
+        session.rollback()
+        return jsonify({"message": str(e)}), 400
     finally:
-        session.close()  # Cerrar la sesión de la base de datos
-
-
-# Ruta para hacer una predicción de fragilidad
-@app.route('/api/predict', methods=['POST'])
-def predict():
-    data = request.json  # Obtener los datos en formato JSON
-    prediction = predict_fragility(data)  # Hacer la predicción llamando a la función correspondiente
-    return jsonify({"prediction": prediction}), 200  # Devolver el resultado de la predicción con código 200 (OK)
-
+        session.close()
 
 # Ruta para guardar una respuesta en la base de datos
 @app.route('/api/save', methods=['POST'])
 def save():
-    data = request.json  # Obtener los datos en formato JSON
-    save_response(data)  # Llamar a la función para guardar los datos en la base de datos
-    return jsonify({"message": "Response saved successfully"}), 201  # Responder con éxito indicando que se guardó
+    data = request.json
+    save_response(data)
+    return jsonify({"message": "Response saved successfully"}), 201
 
+# Ruta para procesar la encuesta
+@app.route('/api/submit-survey', methods=['POST'])
+def submit_survey():
+    """
+    Ruta para manejar el envío de la encuesta.
+    Se espera que los datos de la encuesta lleguen en formato JSON.
+    """
+    try:
+        form_data = request.json  # Cambiado a request.json
+        user_id = form_data.get('user_id')
+
+        if not user_id:
+            return jsonify({"error": "Falta el ID del usuario."}), 400
+
+        save_user_response(user_id, form_data)
+
+        return jsonify({"message": "Respuestas guardadas con éxito"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Función para guardar respuestas
+def save_user_response(user_id, form_data):
+    """
+    Función que guarda las respuestas de la encuesta en la base de datos.
+    :param user_id: ID del usuario que envía la respuesta
+    :param form_data: Diccionario con los datos del formulario
+    """
+    response_data = {
+        'edad': form_data.get('edad'),
+        'estado_civil': form_data.get('estado_civil'),
+        'sexo_nacimiento': form_data.get('sexo_nacimiento'),
+        'escolaridad': form_data.get('escolaridad'),
+        'ocupacion': form_data.get('ocupacion'),
+        'ingresos': form_data.get('ingresos'),
+        'fatiga': form_data.get('fatiga'),
+        'escalones': form_data.get('escalones'),
+        'caminar': form_data.get('caminar'),
+        'enfermedades': form_data.get('enfermedades'),
+        'peso_perdido': form_data.get('peso_perdido'),
+        'fragilidad': form_data.get('fragilidad'),
+        'enfermedades_cronicas': form_data.get('enfermedades_cronicas'),
+        'enfermedad_cardiovascular': form_data.get('enfermedad_cardiovascular'),
+        'diabetes': form_data.get('diabetes'),
+        'epoc': form_data.get('epoc'),
+        'artrosis': form_data.get('artrosis'),
+        'osteoporosis': form_data.get('osteoporosis'),
+        'incontinencia': form_data.get('incontinencia'),
+        'desordenes_mentales': form_data.get('desordenes_mentales'),
+        'fuma': form_data.get('fuma'),
+        'alcohol': form_data.get('alcohol'),
+        'obesidad_abdominal': form_data.get('obesidad_abdominal'),
+        'audicion': form_data.get('audicion'),
+        'vision': form_data.get('vision'),
+        'miedo_caer': form_data.get('miedo_caer'),
+        'estado_salud': form_data.get('estado_salud'),
+        'dolor': form_data.get('dolor'),
+        'problemas_equilibrio': form_data.get('problemas_equilibrio'),
+        'silla': form_data.get('silla'),
+        'memoria': form_data.get('memoria'),
+        'sueño': form_data.get('sueño'),
+        'soledad': form_data.get('soledad'),
+        'uso_redes': form_data.get('uso_redes'),
+        'soporte_social': form_data.get('soporte_social'),
+        'repeticion_palabras': form_data.get('repeticion_palabras'),
+        'dibujo_reloj': form_data.get('dibujo_reloj'),
+        'repeticion_puntuacion': form_data.get('repeticion_puntuacion'),
+        'depresion': form_data.get('depresion'),
+    }
+
+    save_response(user_id, response_data)
 
 # Ruta para hacer una predicción usando el modelo de OpenAI
-@app.route('/api/predict_openai', methods=['POST'])
-def predict_openai():
-    data = request.json  # Obtener los datos en formato JSON
-    prompt = f"Predict fragility for the following data: {data}"  # Crear un prompt para enviar a OpenAI
-    response = openai.Completion.create(
-        engine="text-davinci-003",  # Utilizar el motor de OpenAI (en este caso text-davinci-003)
-        prompt=prompt,  # Enviar el prompt con los datos
-        max_tokens=50  # Limitar la respuesta a 50 tokens
-    )
-    prediction = response.choices[0].text.strip()  # Obtener la predicción del modelo y eliminar espacios en blanco
-    return jsonify({"prediction": prediction}), 200  # Devolver la predicción con código 200 (OK)
+@app.route('/api/predict', methods=['POST'])
+def predict():
+    data = request.json
 
-# Ejecutar la aplicación en modo de depuración
+    # Mock de la predicción de fragilidad
+    mock_prediction = {
+        "fragilidad": "moderada",
+        "recomendaciones": "Mejorar la actividad física y la dieta."
+    }
+
+    return jsonify({"prediction": mock_prediction}), 200
+
+# Ruta para servir archivos estáticos desde 'frontend/static'
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('frontend/static', filename)
+
 if __name__ == '__main__':
-    app.run(debug=True)  # Iniciar el servidor Flask con el modo de depuración activado
+    app.run(debug=True)
