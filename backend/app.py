@@ -132,23 +132,48 @@ def save_user_response(user_id, form_data):
 
     save_response(user_id, response_data)
 
+
 # Ruta para hacer una predicción usando el modelo de OpenAI
 @app.route('/api/predict', methods=['POST'])
 def predict():
-    data = request.json
+    fragilidad=" fragilidad moderada, Mejorar la actividad física y la dieta."
+    recomendaciones="Mejorar la actividad física y la dieta."
+    return fragilidad, recomendaciones
 
-    # Mock de la predicción de fragilidad
-    mock_prediction = {
-        "fragilidad": "moderada",
-        "recomendaciones": "Mejorar la actividad física y la dieta."
-    }
 
-    return jsonify({"prediction": mock_prediction}), 200
+@app.route('/procesar_edad', methods=['POST'])
+def procesar_edad():
+    edad = request.form.get('edad')
+    edad = int(edad)
+
+    reco= "No fragil"
+    recomendacion = """
+    Ante todo PACIENCIA, COMPRENSIÓN Y FLEXIBILIDAD
+
+    El estado de fragilidad requiere un cuidado integral para no perder más autonomía e incluso intentar recuperarla. Para esto, es muy importante una tarea conjunta entre el adulto frágil y su red de cuidadores para garantizar la seguridad en el cuidado.
+    1- Tener especial cuidado con la toma de medicación. El adulto frágil debe ser supervisado en la toma de la medicación prescripta. Sé flexible, si la persona mayor no quiere tomar su medicación puedes volver a intentarlo en otro momento. Dejá el horario a la vista; tratar de tener franjas horarias; asociar tomas con comidas; crear rutina. Evitá tomas nocturnas que alteren el sueño. No mezclen tratamientos sin la autorización del médico; evitar duplicar dosis.
+    2- Colaborar en generar rutinas saludables. Evitar siestas prolongadas, no mirar televisión antes de dormir. Evitar comidas copiosas antes de acostarse. Estimule paseos al aire libre y la realización de actividades sociales y lúdicas
+    3- Estimular la esfera cognitiva. Se pueden realizar juegos compartidos que estimulan el contacto social. Además, estimulan el lenguaje y generan sensación de satisfacción. Pueden ser juegos de mesa, sudoku, rompecabezas. Anotar fechas importantes, tachar aquellas que hayan pasado. Estimular conversaciones sin que parezcan evaluaciones
+    4- Repartir tareas de cuidado. En caso de necesitarlo, contar con cuidador a tiempo parcial o permanente. El cuidador de una persona mayor dependiente debe procurar la participación activa de la persona cuidada, no sobreprotegiéndola ni haciendo cosas que él mismo pudiera hacer.
+    5- Cuidar la higiene personal. La dificultad para el aseo es de las primeras alteraciones que presentan los adultos dependientes. Según el grado de dependencia se deberán establecer estrategias para el aseo. La ducha quedará reservada para quienes pueden bipedestación, la bañera si pueden ingresar y salir sin ayudas (se puede adaptar la bañera generando un ingreso sencillo). En caso de no poder utilizar esas estrategias, se realizará el aseo con asistencia en la cama.
+    6- Prevenir caídas. Hay que tener especial cuidado con las caídas. Antes de comenzar a mover al adulto mayor, se deberá intentar que él lo pueda hacer por sus propios medios asistiéndolo verbalmente y ofreciendo apoyo que favorezca el movimiento. Por otro lado, si el adulto mayor puede caminar hay que evaluar la necesidad de asistencia con dispositivos. Es fundamental que esto último cuente con indicación clara de un especialista puesto que en muchos casos puede ser contraproducente.
+    7- Cuidar la piel. En caso de incontinencia urinaria, corresponde realizar una consulta a un especialista ya que muchas veces se podría revertir. En caso de que la incontinencia fuera crónica y requiriese pañales se debe cambiar el pañal con regularidad (se recomienda al menos cada 4 hs), se debe limpiar y secar la piel antes de poner un pañal nuevo y utilizar cremas diseñadas para tal fin de forma tal que forme una barrera protectora en la piel y se reduzca la fricción y la humedad. En caso de estar postrado en cama, optimizar el cambio de pañales, utilizar dispositivos para evitar lesiones por presión (colchón antiescaras) y garantizar la rotación en la cama
+    """
+
+    rta = ""
+
+    if edad > 60:
+        rta = recomendacion
+    else:
+        rta = reco
+
+    return f'{rta}'
 
 # Ruta para servir archivos estáticos desde 'frontend/static'
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     return send_from_directory('frontend/static', filename)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

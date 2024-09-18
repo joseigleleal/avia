@@ -36,20 +36,6 @@ def save_response(data):
     except json.JSONDecodeError:
         return "Error decoding JSON response from server"
 
-
-# Función para realizar la predicción
-def predict(data):
-    try:
-        response = requests.post(f"{API_URL}/api/predict", json=data)
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.HTTPError as http_err:
-        return f"HTTP error occurred while predicting: {http_err}"
-    except requests.exceptions.RequestException as err:
-        return f"Error occurred while predicting: {err}"
-    except json.JSONDecodeError:
-        return "Error decoding JSON response from server"
-
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -82,6 +68,18 @@ def login_page():
 
     return render_template('login.html')
 
+# Función para realizar la predicción
+def predict(data):
+    try:
+        response = requests.post(f"{API_URL}/api/predict", json=data)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.HTTPError as http_err:
+        return f"HTTP error occurred while predicting: {http_err}"
+    except requests.exceptions.RequestException as err:
+        return f"Error occurred while predicting: {err}"
+    except json.JSONDecodeError:
+        return "Error decoding JSON response from server"
 
 @app.route('/survey', methods=['GET', 'POST'])
 def survey_page():
