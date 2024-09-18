@@ -23,8 +23,10 @@
         <!-- Sección 1: Datos Sociodemográficos -->
         <h2>Datos Sociodemográficos</h2>
 
-        <label for="edad">1 - ¿Cuántos años tiene? Edad (En años):</label>
-        <input type="number" id="edad" name="edad" min="0" required>
+        <!-- hacer metodo para calcular la edad en base a esta fecha de nac -->
+        <label for="fecha_nacimiento">1 - Fecha de nacimiento:</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+
 
         <label for="estado_civil">2 - ¿Cuál es su estado civil?</label>
         <select id="estado_civil" name="estado_civil" required>
@@ -50,7 +52,6 @@
             <option value="Universitario">Universitario</option>
             <option value="Posgrado">Posgrado</option>
         </select>
-        <small>Puede seleccionar más de una opción.</small>
 
         <label for="ocupacion">5 - ¿Cómo definiría su ocupación a lo largo de su vida?</label>
         <select id="ocupacion" name="ocupacion" required>
@@ -62,19 +63,22 @@
             <option value="Nunca trabajó">Nunca trabajó</option>
         </select>
 
-        <label for="ingresos">6 - ¿Cuáles son los ingresos mensuales de su hogar (en pesos) aproximados?</label>
+        <label for="ingresos">6- Según sus ingresos diría que es...</label>
         <select id="ingresos" name="ingresos" required>
-            <option value="8.500 - 260.000">8.500 - 260.000</option>
-            <option value="260.000 - 400.000">260.000 - 400.000</option>
-            <option value="400.000 - 600.000">400.000 - 600.000</option>
-            <option value="600.000 - 950.000">600.000 - 950.000</option>
-            <option value="950.000 - 33.937.000">950.000 - 33.937.000</option>
+            <option value=1>Clase Baja (No consigo alimentarme sin ayuda de otros)</option>
+            <option value=2>Clase Media Baja (Tengo garantizado lo mínimo que necesito)</option>
+            <option value=3>Clase Media (Tengo lo que necesito para vivir bien aunque nada me sobra)</option>
+            <option value=4>Clase Media Alta (Me alcanza para vivir bien y puedo ahorrar)</option>
+            <option value=5>Clase Alta (No tengo ningún tipo de problemas económicos)</option>
         </select>
 
-        <!-- Sección 2: Escala FRAGIL
-        (las respuestas 1 y 2 puntúan como 1 y las otras como 0) (FATIGABILIDAD)
-        -->
-        <h2>Escala FRAGIL</h2>
+        <!-- Sección 2: Autonomia actual: DESDE ACÁ, METODO PARA SUMAR DECIR FRAGIL Ó NO FRAGIL
+         FRAGIL <=3
+         NO FRAGIL < 3
+         -->
+
+        <h2>Autonomia actual</h2>
+        <h3>Estas preguntas están destinadas a identificar a partir de una serie de preguntas su grado de autonomía actual</h3>
 
         <label for="fatiga">7 - ¿Qué parte del tiempo durante las últimas 4 semanas se sintió cansado/a?</label>
         <select id="fatiga" name="fatiga" required>
@@ -86,21 +90,20 @@
         </select>
 
         <label for="escalones">8 - ¿Tiene alguna dificultad para subir 10 escalones sin descansar por usted mismo/a, sin
-            ningún tipo de ayuda? (RESISTENCIA)</label>
+            ningún tipo de ayuda?</label>
         <select id="escalones" name="escalones" required>
             <option value=1>Sí</option>
             <option value=0>No</option>
         </select>
 
-        <label for="caminar">9 - Por sí mismo/a y sin el uso de ayudas, ¿tiene alguna dificultad para caminar 2 cuadras?
-            (DEAMBULACIÓN)</label>
+        <label for="caminar">9 - Por sí mismo/a y sin el uso de ayudas, ¿tiene alguna dificultad para caminar 200 metros?</label>
         <select id="caminar" name="caminar" required>
             <option value=1>Sí</option>
             <option value=0>No</option>
         </select>
 
-        <label for="enfermedades">10 - ¿Alguna vez un/a médico/a le dijo que usted tiene alguna de las siguientes
-            enfermedades? (COMORBILIDAD) De 5 a 11 enfermedades = 1 punto; De 0 a 4 enfermedades = 0 puntos</label>
+        <!-- De 5 a 11 enfermedades = 1 punto; De 0 a 4 enfermedades = 0 puntos HACER A LOGICA-->
+        <label for="enfermedades">10 - ¿Alguna vez un/a médico/a le dijo que usted tiene  alguna de las siguientes enfermedades? MARQUE TODAS LAS QUE CONSIDERE</label>
         <select id="enfermedades" name="enfermedades[]" multiple>
             <option value=1>Hipertensión</option>
             <option value=1>Diabetes</option>
@@ -118,9 +121,12 @@
 
         <label for="peso_perdido">11 - ¿Ha tenido pérdida de peso de forma involuntaria en el último año?</label>
         <select id="peso_perdido" name="peso_perdido" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value=1>Sí</option>
+            <option value=0>No</option>
         </select>
+        <!-- ACÁ TERMINAN LOS CAMPOS QUE CALCULAN LA FRAGILIDAD
+        -->
+
 
         <!-- A LA FUNCION
         <label for="fragilidad">11-TOTAL</label>
@@ -132,100 +138,131 @@
         -->
 
         <!-- Sección 3: Hábitos y Autopercepción de Salud -->
-        <h2>"(2da Parte) Hábitos y Autopercepción de Salud</h2>
+        <h2>" Hábitos y Autopercepción de Salud</h2>
 
-        <label for="enfermedades_cronicas">12 - ¿Tiene antecedentes de enfermedades crónicas no transmisibles
-            (enfermedad cardiovascular, Diabetes, EPOC, artrosis, osteoporosis, incontinencia urinaria, desórdenes
-            mentales)?</label>
-        <select id="enfermedades_cronicas" name="enfermedades_cronicas" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
-        </select>
-
-        <label for="enfermedad_cardiovascular">13 - ¿Tiene alguna enfermedad cardiovascular?</label>
+        <label for="enfermedad_cardiovascular">12 - ¿Tiene alguna enfermedad diagnostico de hipertensión arterial?</label>
         <select id="enfermedad_cardiovascular" name="enfermedad_cardiovascular" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
 
-        <label for="diabetes">14 - ¿Tiene diabetes?</label>
-        <select id="diabetes" name="diabetes" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+        <label for="angina">13 - ¿Tiene angina de pecho? (esto se refiere a dolor de pecho como causa de alteraciones en sus arterias coronarias)</label>
+        <select id="angina" name="angina" required>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
 
-        <label for="epoc">15 - ¿Tiene EPOC?</label>
+        <label for="icc">14 - ¿Tiene insuficiencia cardiaca?</label>
+        <select id="icc" name="icc" required>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
+        </select>
+
+        <label for="iam">15 - ¿Ha tenido alguna vez un infarto?</label>
+        <select id="iam" name="iam" required>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
+        </select>
+
+        <label for="acv">16 - ¿Ha tenido ACV?</label>
+        <select id="acv" name="acv" required>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
+        </select>
+
+        <label for="dbt">17 - ¿Tiene diagnostico de diabetes?</label>
+        <select id="dbt" name="dbt" required>
+            <option value="recodejerYdiabetes">Sí</option>
+            <option>No</option>
+        </select>
+
+        <label for="epoc">18 - ¿Tiene EPOC?</label>
         <select id="epoc" name="epoc" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value="epocYfumar">Sí</option>
+            <option>No</option>
         </select>
 
-        <label for="artrosis">16 - ¿Tiene artrosis?</label>
+        <label for="artrosis">19 - ¿Tiene artrosis?</label>
         <select id="artrosis" name="artrosis" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value="artrosisYrecodejer">Sí</option>
+            <option>No</option>
         </select>
 
-        <label for="osteoporosis">17 - ¿Tiene osteoporosis?</label>
+        <label for="osteoporosis">20 - ¿Tiene osteoporosis?</label>
         <select id="osteoporosis" name="osteoporosis" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
 
-        <label for="incontinencia">18 - ¿Tiene incontinencia urinaria?</label>
+        <label for="incontinencia">21 - ¿Tiene incontinencia urinaria?</label>
         <select id="incontinencia" name="incontinencia" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value="incontinencia">Sí</option>
+            <option >No</option>
         </select>
 
-        <label for="desordenes_mentales">19 - ¿Padece desórdenes mentales?</label>
+        <label for="desordenes_mentales">22 - ¿Padece desórdenes mentales?</label>
         <select id="desordenes_mentales" name="desordenes_mentales" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value="saludmental">Sí</option>
+            <option >No</option>
         </select>
 
-        <label for="fuma">20 - ¿Fuma?</label>
+        <label for="fuma">23 - ¿Fuma?</label>
         <select id="fuma" name="fuma" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value="fumar">Sí</option>
+            <option>No</option>
         </select>
 
-        <label for="alcohol">21 - ¿Consume alcohol?</label>
+        <label for="alcohol">24 - ¿Consume alcohol?</label>
         <select id="alcohol" name="alcohol" required>
-            <option value="Diariamente">Diariamente</option>
-            <option value="Frecuentemente">Frecuentemente</option>
-            <option value="Casi Nunca">Casi Nunca</option>
-            <option value="Nunca">Nunca</option>
+            <option value="alcohol">Diariamente</option>
+            <option value="alcohol">Frecuentemente</option>
+            <option >Casi Nunca</option>
+            <option>Nunca</option>
         </select>
 
-        <label for="obesidad_abdominal">22 - ¿Tiene obesidad abdominal? (Si la panza es mayor a 102 centímetros en
+        <label for="peso">25 - Cual es su peso en kg?</label>
+        <input type="number" id="peso" name="peso" min="30" max="200" required>
+
+        <label for="alt">25 - Cual es su altura en metros?</label>
+        <input type="number" id="alt" name="alt" min="1" max="3" required>
+
+        <label for="bmi" id="bmi">Su BMI es $peso/altura al cuadrado</label>
+        <!-- si bmi<18.5 bajo peso
+        entre 18.5 y 24.9 saludable
+        entre 25 y 29.9
+        entre 30 y 39.9 obesidad
+        mas de 40 obesidad severa-->
+
+        <label for="obesidad_abdominal">26 - ¿Tiene obesidad abdominal? (Si la panza es mayor a 102 centímetros en
             varones o mayor a 88 centímetros en mujeres)</label>
         <select id="obesidad_abdominal" name="obesidad_abdominal" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+            <option value="obesidadYrecodejer">Sí</option>
+            <option>No</option>
         </select>
 
-        <label for="audicion">23 - Usted piensa que su audición es:</label>
+        <label for="audicion">27 - Usted piensa que su audición es:</label>
         <select id="audicion" name="audicion" required>
-            <option value="Buena">Buena</option>
-            <option value="Regular">Regular</option>
-            <option value="Mala">Mala</option>
+            <option value="audicion">Buena</option>
+            <option value="audicion">Regular</option>
+            <option value="audicion">Mala</option>
         </select>
 
-        <label for="vision">24 - Usted piensa que su visión es:</label>
+        <label for="vision">28 - Usted piensa que su visión es:</label>
         <select id="vision" name="vision" required>
-            <option value="Buena">Buena</option>
-            <option value="Regular">Regular</option>
-            <option value="Mala">Mala</option>
+            <option value="vision">Buena</option>
+            <option value="vision">Regular</option>
+            <option value="vision">Mala</option>
         </select>
 
-        <label for="miedo_caer">25 - ¿Usted tiene miedo a caerse?</label>
-        <select id="miedo_caer" name="miedo_caer" required>
-            <option value="Sí">Sí</option>
-            <option value="No">No</option>
+        <label for="movilidad">29 - Se ha caido alguna ves en el ultimo año?</label>
+        <select id="movilidad" name="movilidad" required>
+            <option value="movilidad">Sí</option>
+            <option >No</option>
         </select>
 
-        <label for="estado_salud">26 - ¿Cuál es su autopercepción de su estado de salud en general?</label>
+        <!-- HASTA ACÁ LLEGAMOS CON LAS PREGUNTAS -->
+
+        <label for="estado_salud">30 - ¿Cuál es su autopercepción de su estado de salud en general?</label>
         <select id="estado_salud" name="estado_salud" required>
             <option value="Buena">Buena</option>
             <option value="Regular">Regular</option>
