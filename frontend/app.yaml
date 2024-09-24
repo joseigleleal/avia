@@ -1,0 +1,13 @@
+runtime: python39
+service: frontend  # Nombre del servicio para el frontend
+
+entrypoint: gunicorn -b :$PORT app:app  # Aquí se asume que app.py es el punto de entrada
+
+handlers:
+  # Ruta para manejar los archivos estáticos
+  - url: /static
+    static_dir: static
+
+  # Todas las demás rutas serán manejadas por Flask
+  - url: /.*
+    script: auto

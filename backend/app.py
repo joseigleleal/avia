@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory
+import pandas as pd
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash
 from database import init_db, save_response, verify_user, User, Session
@@ -168,6 +169,89 @@ def procesar_edad():
         rta = reco
 
     return f'{rta}'
+
+
+@app.route('/generar_json', methods=['POST'])
+def generar_json():
+    # Obtener todos los datos del formulario
+    data = {}
+    for key, value in request.form.items():
+        data[key] = value
+
+    # Puedes aplicar alguna lógica adicional antes de devolver la respuesta
+
+    # Devuelve los datos como JSON
+    return jsonify(data)
+
+
+# Cargar el archivo CSV en un DataFrame
+df = pd.read_csv('data/datarec.csv')
+
+df = df.fillna("Valor por defecto")  # Rellena datos faltantes con un valor específico
+
+# Verificar que el DataFrame se haya creado correctamente
+#print(df)
+
+@app.route('/generar_informe', methods=['POST'])
+def generar_informe():
+    # Obtener todos los datos del formulario
+    respuestas = {}
+    for key, value in request.form.items():
+        respuestas[key] = value
+
+    recomendaciones = []
+    servicios = []
+
+    # Mapeo de las preguntas a las etiquetas
+    preguntas_a_etiquetas = {
+        "¿Tiene diagnóstico de hipertensión arterial?": "13. recomendaciones de ejercicio",
+        "¿Tiene angina de pecho?": "13. recomendaciones de ejercicio",
+        "¿Tiene insuficiencia cardiaca?": "13. recomendaciones de ejercicio",
+        "¿Ha tenido alguna vez un infarto?": "13. recomendaciones de ejercicio",
+        "¿Ha tenido ACV?": "13. recomendaciones de ejercicio",
+        "¿Tiene diagnóstico de diabetes?": "9. Diabetes",
+        "¿Tiene EPOC?": "10. EPOC",
+        "¿Tiene artrosis?": "11. Artrosis",
+        "¿Tiene osteoporosis?": "14. Osteoporosis",
+        "¿Tiene incontinencia urinaria?": "16. Incontinencia urinaria",
+        "¿Padece desórdenes mentales?": "17. Salud mental",
+        "¿Fuma?": "1. Fumar",
+        "¿Consume alcohol?": "2. Alcohol",
+        "¿Tiene obesidad abdominal?": "5. Obesidad",
+        "¿Usted piensa que su audición es?": "8. Audición",
+        "¿Usted piensa que su visión es?": "7. Visión",
+        "¿Se ha caído alguna vez en el último año?": "15. Movilidad",
+        "¿Cuál es su autopercepción de su estado de salud en general?": "12. dolor",
+        "¿Cómo piensa que es su sueño por las noches?": "19. sueño",
+        "¿Se siente solo?": "18. salud emocional",
+        "¿Cómo describiría su uso de redes sociales?": "20. RRSS"
+    }
+
+    # Iterar sobre las respuestas y buscar recomendaciones y servicios
+    for pregunta, respuesta in respuestas.items():
+        if pregunta in preguntas_a_etiquetas:
+            etiqueta = preguntas_a_etiquetas[pregunta]
+            # Filtrar el DataFrame por la etiqueta
+            row = df[df['Etiquetas'] == etiqueta]
+            if not row.empty:
+                recomendaciones.append(row['Recomendación'].values[0])
+                servicios.append(row['Servicios'].values[0])
+
+    # Generar el disclaimer
+    disclaimer = ("Estas recomendaciones de salud fueron generadas con la ayuda de inteligencia artificial."
+                  " Bajo ningún concepto son reemplazo de la evaluación por un profesional de la salud. "
+                  "Le recomendamos realizar consultas de salud periódicas con clínica médica o gerontología "
+                  "para poder elaborar un plan de cuidado.")
+
+    # Crear el informe
+    informe = {
+        "Recomendaciones": "\n".join(recomendaciones),
+        "Servicios": "\n".join(servicios),
+        "Disclaimer": disclaimer
+    }
+
+    return jsonify(informe)
+
 
 # Ruta para servir archivos estáticos desde 'frontend/static'
 @app.route('/static/<path:filename>')
