@@ -3,14 +3,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
-
 
 Base = declarative_base()
 
 # Crear un motor de base de datos usando SQLite y el archivo 'responses.db'
-database_path = os.path.join('instance', 'responses.db')
-engine = create_engine(f'sqlite:///{database_path}')
+engine = create_engine('sqlite:///responses.db')
 
 # Crear un generador de sesiones, atado al motor de la base de datos
 Session = sessionmaker(bind=engine)

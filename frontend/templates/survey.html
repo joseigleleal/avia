@@ -9,348 +9,408 @@
 <body>
 <div class="container">
     <h1>Reconquista escucha a sus adultos mayores</h1>
-    <p>Esta encuesta nos permitira conocer un poco mas la situacion de los adultos mayores en la ciudad de Reconquista, Santa Fe; de manera que podamos construir herramientas para predecir algunos aspectos criticos y evitarlos o retrasar su aparicion.</p>
-    <!-- Boton de Logout -->
+    <p>Esta encuesta nos permitirá conocer un poco más la situación de los adultos mayores en la ciudad de Reconquista,
+        Santa Fe; de manera que podamos construir herramientas para predecir algunos aspectos críticos y evitarlos o
+        retrasar su aparición.</p>
+
+    <!-- Botón de Logout -->
     <form action="/logout" method="post">
         <button type="submit" class="logout-button">Logout</button>
     </form>
-    <form method="POST" action="http://127.0.0.1:5000/generar_json<">
-        <!-- Seccion 1: Datos Sociodemograficos -->
-        <h2>Datos Sociodemograficos</h2>
-        <!-- hacer metodo para calcular la edad en base a esta fecha de nacimiento -->
+
+    <form method="POST" action="http://127.0.0.1:5000/procesar_edad">
+
+        <!-- Sección 1: Datos Sociodemográficos -->
+        <h2>Datos Sociodemográficos</h2>
+
+        <!-- hacer metodo para calcular la edad en base a esta fecha de nac -->
         <label for="fecha_nacimiento">1 - Fecha de nacimiento:</label>
         <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
-        <label for="estado_civil">2 - ¿Cual es su estado civil?</label>
+
+
+        <label for="estado_civil">2 - ¿Cuál es su estado civil?</label>
         <select id="estado_civil" name="estado_civil" required>
             <option value="Casado">Casado</option>
             <option value="Conviviente">Conviviente</option>
             <option value="Divorciado/Separado/Soltero">Divorciado/Separado/Soltero</option>
             <option value="Viudo/a">Viudo/a</option>
         </select>
+
         <label for="sexo_nacimiento">3 - Sexo de nacimiento:</label>
         <select id="sexo_nacimiento" name="sexo_nacimiento" required>
-            <option value="Varon">Varon</option>
+            <option value="Varón">Varón</option>
             <option value="Mujer">Mujer</option>
         </select>
-        <label for="escolaridad">4 - ¿Cual es el grado de escolaridad maxima alcanzada?</label>
-        <select id="escolaridad" name="escolaridad" multiple required>
-            <option value="Tecnico">Tecnico</option>
-            <option value="Bachillerato/Preparatoria">Bachillerato/Preparatoria</option>
-            <option value="Titulo universitario">Titulo universitario</option>
-            <option value="Secundaria completa">Secundaria completa</option>
-            <option value="Primaria completa">Primaria completa</option>
-            <option value="Otro">Otro</option>
-            <option value="Sin estudios">Sin estudios</option>
+
+        <label for="escolaridad">4 - ¿Cuál es el grado de escolaridad máxima alcanzada?</label>
+        <select id="escolaridad" name="escolaridad[]" multiple required>
+            <option value="Primario incompleto">Primario incompleto</option>
+            <option value="Primario completo">Primario completo</option>
+            <option value="Secundario incompleto">Secundario incompleto</option>
+            <option value="Secundario completo">Secundario completo</option>
+            <option value="Terciario">Terciario</option>
+            <option value="Universitario">Universitario</option>
+            <option value="Posgrado">Posgrado</option>
         </select>
-        <label for="ocupacion">5 - ¿Como definiria su ocupacion a lo largo de su vida?</label>
+
+        <label for="ocupacion">5 - ¿Cómo definiría su ocupación a lo largo de su vida?</label>
         <select id="ocupacion" name="ocupacion" required>
-            <option value="Profesional / Empresario / Cargo Gerencial">Profesional / Empresario / Cargo Gerencial </option>
-            <option value="Ocupaciones Generales / Empleado / Cuentapropista / Ama de Casa">Ocupaciones Generales / Empleado / Cuentapropista / Ama de Casa </option>
-            <option value="Nunca trabajo">Nunca trabajo</option>
+            <option value="Profesional / Empresario / Cargo Gerencial">Profesional / Empresario / Cargo Gerencial
+            </option>
+            <option value="Ocupaciones Generales / Empleado / Cuentapropista / Ama de Casa">Ocupaciones Generales /
+                Empleado / Cuentapropista / Ama de Casa
+            </option>
+            <option value="Nunca trabajó">Nunca trabajó</option>
         </select>
-        <label for="ingresos">6 - Segun sus ingresos diria que es...</label>
+
+        <label for="ingresos">6- Según sus ingresos diría que es...</label>
         <select id="ingresos" name="ingresos" required>
-            <option value="Clase Baja">Clase Baja (No consigo alimentarme sin ayuda de otros)</option>
-            <option value="Clase Media Baja">Clase Media Baja (Tengo garantizado lo minimo que necesito)</option>
-            <option value="Clase Media">Clase Media (Tengo lo que necesito para vivir bien aunque nada me sobra) </option>
-            <option value="Clase Media Alta">Clase Media Alta (Me alcanza para vivir bien y puedo ahorrar)</option>
-            <option value="Clase Alta">Clase Alta (No tengo ningun tipo de problemas economicos)</option>
+            <option value=1>Clase Baja (No consigo alimentarme sin ayuda de otros)</option>
+            <option value=2>Clase Media Baja (Tengo garantizado lo mínimo que necesito)</option>
+            <option value=3>Clase Media (Tengo lo que necesito para vivir bien aunque nada me sobra)</option>
+            <option value=4>Clase Media Alta (Me alcanza para vivir bien y puedo ahorrar)</option>
+            <option value=5>Clase Alta (No tengo ningún tipo de problemas económicos)</option>
         </select>
-        <!-- Seccion 2: Autonomia actual -->
+
+        <!-- Sección 2: Autonomia actual: DESDE ACÁ, METODO PARA SUMAR DECIR FRAGIL Ó NO FRAGIL
+         FRAGIL <=3
+         NO FRAGIL < 3
+         -->
+
         <h2>Autonomia actual</h2>
-        <h3>Estas preguntas estan destinadas a identificar a partir de una serie de preguntas su grado de autonomia actual</h3>
-        <label for="fatiga">7 - ¿Que parte del tiempo durante las ultimas 4 semanas se sintio cansado/a?</label>
+        <h3>Estas preguntas están destinadas a identificar a partir de una serie de preguntas su grado de autonomía actual</h3>
+
+        <label for="fatiga">7 - ¿Qué parte del tiempo durante las últimas 4 semanas se sintió cansado/a?</label>
         <select id="fatiga" name="fatiga" required>
-            <option value="Todo el tiempo">Todo el tiempo</option>
-            <option value="La mayoria de las veces">La mayoria de las veces</option>
-            <option value="Parte del tiempo">Parte del tiempo</option>
-            <option value="Un poco del tiempo">Un poco del tiempo</option>
-            <option value="En ningun momento">En ningun momento</option>
+            <option value=1>Todo el tiempo</option>
+            <option value=1>La mayoría de las veces</option>
+            <option value=0>Parte del tiempo</option>
+            <option value=0>Un poco del tiempo</option>
+            <option value=0>En ningún momento</option>
         </select>
-        <label for="escalones">8 - ¿Tiene alguna dificultad para subir 10 escalones sin descansar por usted mismo/a, sin ningun tipo de ayuda?</label>
+
+        <label for="escalones">8 - ¿Tiene alguna dificultad para subir 10 escalones sin descansar por usted mismo/a, sin
+            ningún tipo de ayuda?</label>
         <select id="escalones" name="escalones" required>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
+            <option value=1>Sí</option>
+            <option value=0>No</option>
         </select>
-        <label for="caminar">9 - Por si mismo/a y sin el uso de ayudas, ¿tiene alguna dificultad para caminar 200 metros?</label>
+
+        <label for="caminar">9 - Por sí mismo/a y sin el uso de ayudas, ¿tiene alguna dificultad para caminar 200 metros?</label>
         <select id="caminar" name="caminar" required>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
+            <option value=1>Sí</option>
+            <option value=0>No</option>
         </select>
-        <!-- De 5 a 11 enfermedades = 1 punto; De 0 a 4 enfermedades = 0 puntos -->
-        <label for="enfermedades">10 - ¿Alguna vez un/a medico/a le dijo que usted tiene alguna de las siguientes enfermedades? MARQUE TODAS LAS QUE CONSIDERE</label>
-        <select id="enfermedades" name="enfermedades" multiple>
-            <option value="Hipertension">Hipertension</option><!-- 1 punto -->
-            <option value="Diabetes">Diabetes</option><!-- 1 punto -->
-            <option value="Cancer">Cancer (que no sea un cancer de piel de menor importancia)</option><!-- 1 punto -->
-            <option value="Enfermedad Pulmonar Cronica">Enfermedad Pulmonar Cronica</option><!-- 1 punto -->
-            <option value="Ataque cardiaco">Ataque cardiaco</option><!-- 1 punto -->
-            <option value="Insuficiencia Cardiaca Congestiva">Insuficiencia Cardiaca Congestiva</option><!-- 1 punto -->
-            <option value="Angina de Pecho">Angina de Pecho</option><!-- 1 punto -->
-            <option value="Asma">Asma</option><!-- 1 punto -->
-            <option value="Artritis">Artritis</option><!-- 1 punto -->
-            <option value="Ictus">Ictus</option><!-- 1 punto -->
-            <option value="Enfermedad renal">Enfermedad renal</option><!-- 1 punto -->
+
+        <!-- De 5 a 11 enfermedades = 1 punto; De 0 a 4 enfermedades = 0 puntos HACER A LOGICA-->
+        <label for="enfermedades">10 - ¿Alguna vez un/a médico/a le dijo que usted tiene  alguna de las siguientes enfermedades? MARQUE TODAS LAS QUE CONSIDERE</label>
+        <select id="enfermedades" name="enfermedades[]" multiple>
+            <option value=1>Hipertensión</option>
+            <option value=1>Diabetes</option>
+            <option value=1>Cáncer (que no sea un cáncer de piel de menor importancia)</option>
+            <option value=1>Enfermedad Pulmonar Crónica</option>
+            <option value=1>Ataque cardíaco</option>
+            <option value=1>Insuficiencia Cardíaca Congestiva</option>
+            <option value=1>Angina de Pecho</option>
+            <option value=1>Asma</option>
+            <option value=1>Artritis</option>
+            <option value=1>Ictus</option>
+            <option value=1>Enfermedad renal</option>
         </select>
-        <small>Puede seleccionar mas de una opcion.</small>
-        <label for="peso_perdido">11 - ¿Ha tenido perdida de peso de forma involuntaria en el ultimo año?</label>
+        <small>Puede seleccionar más de una opción.</small>
+
+        <label for="peso_perdido">11 - ¿Ha tenido pérdida de peso de forma involuntaria en el último año?</label>
         <select id="peso_perdido" name="peso_perdido" required>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
+            <option value=1>Sí</option>
+            <option value=0>No</option>
         </select>
-        <!-- Seccion 3: Habitos y Autopercepcion de Salud -->
-        <h2>Habitos y Autopercepcion de Salud</h2>
-        <label for="enfermedad_cardiovascular">12 - ¿Tiene alguna enfermedad diagnostico de hipertension arterial?</label>
+        <!-- ACÁ TERMINAN LOS CAMPOS QUE CALCULAN LA FRAGILIDAD
+        -->
+
+
+        <!-- A LA FUNCION
+        <label for="fragilidad">11-TOTAL</label>
+        <select id="fragilidad" name="fragilidad" required>
+            <option value="Probable fragilidad: 3 a 5 puntos">Probable fragilidad: 3 a 5 puntos.</option>
+            <option value="Probable pre-fragilidad: 1 a 2 puntos">Probable pre-fragilidad: 1 a 2 puntos.</option>
+            <option value="Robusto">Robusto</option>
+        </select>
+        -->
+
+        <!-- Sección 3: Hábitos y Autopercepción de Salud -->
+        <h2>" Hábitos y Autopercepción de Salud</h2>
+
+        <label for="enfermedad_cardiovascular">12 - ¿Tiene alguna enfermedad diagnostico de hipertensión arterial?</label>
         <select id="enfermedad_cardiovascular" name="enfermedad_cardiovascular" required>
-            <option value="Si">Si</option><!-- recodejer -->
-            <option value="No">No</option>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="angina">13 - ¿Tiene angina de pecho? (esto se refiere a dolor de pecho como causa de alteraciones en sus arterias coronarias)</label>
         <select id="angina" name="angina" required>
-            <option value="Si">Si</option><!-- recodejer -->
-            <option value="No">No</option>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="icc">14 - ¿Tiene insuficiencia cardiaca?</label>
         <select id="icc" name="icc" required>
-            <option value="Si">Si</option><!-- recodejer -->
-            <option value="No">No</option>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="iam">15 - ¿Ha tenido alguna vez un infarto?</label>
         <select id="iam" name="iam" required>
-            <option value="Si">Si</option><!-- recodejer -->
-            <option value="No">No</option>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="acv">16 - ¿Ha tenido ACV?</label>
         <select id="acv" name="acv" required>
-            <option value="Si">Si</option><!-- recodejer -->
-            <option value="No">No</option>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="dbt">17 - ¿Tiene diagnostico de diabetes?</label>
         <select id="dbt" name="dbt" required>
-            <option value="Si">Si</option><!-- recodejerYdiabetes -->
-            <option value="No">No</option>
+            <option value="recodejerYdiabetes">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="epoc">18 - ¿Tiene EPOC?</label>
         <select id="epoc" name="epoc" required>
-            <option value="Si">Si</option><!-- epocYfumar -->
-            <option value="No">No</option>
+            <option value="epocYfumar">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="artrosis">19 - ¿Tiene artrosis?</label>
         <select id="artrosis" name="artrosis" required>
-            <option value="Si">Si</option><!-- artrosisYrecodejer -->
-            <option value="No">No</option>
+            <option value="artrosisYrecodejer">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="osteoporosis">20 - ¿Tiene osteoporosis?</label>
         <select id="osteoporosis" name="osteoporosis" required>
-            <option value="Si">Si</option><!-- recodejer -->
-            <option value="No">No</option>
+            <option value="recodejer">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="incontinencia">21 - ¿Tiene incontinencia urinaria?</label>
         <select id="incontinencia" name="incontinencia" required>
-            <option value="Si">Si</option><!-- incontinencia -->
-            <option value="No">No</option>
+            <option value="incontinencia">Sí</option>
+            <option >No</option>
         </select>
-        <label for="desordenes_mentales">22 - ¿Padece desordenes mentales?</label>
+
+        <label for="desordenes_mentales">22 - ¿Padece desórdenes mentales?</label>
         <select id="desordenes_mentales" name="desordenes_mentales" required>
-            <option value="Si">Si</option><!-- saludmental -->
-            <option value="No">No</option>
+            <option value="saludmental">Sí</option>
+            <option >No</option>
         </select>
+
         <label for="fuma">23 - ¿Fuma?</label>
         <select id="fuma" name="fuma" required>
-            <option value="Si">Si</option><!-- fumar -->
-            <option value="No">No</option>
+            <option value="fumar">Sí</option>
+            <option>No</option>
         </select>
+
         <label for="alcohol">24 - ¿Consume alcohol?</label>
         <select id="alcohol" name="alcohol" required>
-            <option value="Casi todos los dias">Casi todos los dias</option>
-            <option value="Cinco o seis dias a la semana">Cinco o seis dias a la semana</option>
-            <option value="Tres o cuatro dias a la semana">Tres o cuatro dias a la semana</option>
-            <option value="Una o dos veces a la semana">Una o dos veces a la semana</option>
-            <option value="Una o dos veces al mes">Una o dos veces al mes</option>
-            <option value="Una o dos veces al mes">Una vez cada dos meses</option>
-            <option value="Una o dos veces al año">Una o dos veces al año</option>
-            <option value="Ninguna en los ultimos 12 meses">Ninguna en los ultimos 12 meses</option>
+            <option value="alcohol">Diariamente</option>
+            <option value="alcohol">Frecuentemente</option>
+            <option >Casi Nunca</option>
+            <option>Nunca</option>
         </select>
-        <label for="peso">25 - ¿Cual es su peso en kg?</label>
+
+        <label for="peso">25 - Cual es su peso en kg?</label>
         <input type="number" id="peso" name="peso" min="30" max="200" required>
-        <label for="altura">26 - ¿Cual es su altura en metros?</label>
-        <input type="number" id="altura" name="altura" required>
-        <label for="indice_masa_corporal" id="indice_masa_corporal">Su BMI es $peso/altura al cuadrado</label>
-        <label for="obesidad_abdominal">27 - Mida su citura centimetros:</label>
-        <input type="number" id="obesidad_abdominal" name="obesidad_abdominal" min="30" max="200" required>
-        <select id="obesidad_abdominal" name="obesidad_abdominal" required> <!-- Si es es mayor a 102 centimetros en varones o mayor a 88 centimetros en mujeres obesidadYrecodejer -->
-            <option value="Si">Si</option>
-            <option value="No">No</option>
+
+        <label for="alt">25 - Cual es su altura en metros?</label>
+        <input type="number" id="alt" name="alt" min="1" max="3" required>
+
+        <label for="bmi" id="bmi">Su BMI es $peso/altura al cuadrado</label>
+        <!-- si bmi<18.5 bajo peso
+        entre 18.5 y 24.9 saludable
+        entre 25 y 29.9
+        entre 30 y 39.9 obesidad
+        mas de 40 obesidad severa-->
+
+        <label for="obesidad_abdominal">26 - ¿Tiene obesidad abdominal? (Si la panza es mayor a 102 centímetros en
+            varones o mayor a 88 centímetros en mujeres)</label>
+        <select id="obesidad_abdominal" name="obesidad_abdominal" required>
+            <option value="obesidadYrecodejer">Sí</option>
+            <option>No</option>
         </select>
-        <label for="audicion">28 - Usted piensa que su audicion es:</label>
+
+        <label for="audicion">27 - Usted piensa que su audición es:</label>
         <select id="audicion" name="audicion" required>
-            <option value="Buena">Buena</option>
-            <option value="Regular">Regular</option>
-            <option value="Mala">Mala</option>
+            <option value="audicion">Buena</option>
+            <option value="audicion">Regular</option>
+            <option value="audicion">Mala</option>
         </select>
-        <label for="vision">29 - Usted piensa que su vision es:</label>
+
+        <label for="vision">28 - Usted piensa que su visión es:</label>
         <select id="vision" name="vision" required>
+            <option value="vision">Buena</option>
+            <option value="vision">Regular</option>
+            <option value="vision">Mala</option>
+        </select>
+
+        <label for="movilidad">29 - Se ha caido alguna ves en el ultimo año?</label>
+        <select id="movilidad" name="movilidad" required>
+            <option value="movilidad">Sí</option>
+            <option >No</option>
+        </select>
+
+        <!-- HASTA ACÁ LLEGAMOS CON LAS PREGUNTAS -->
+
+        <label for="estado_salud">30 - ¿Cuál es su autopercepción de su estado de salud en general?</label>
+        <select id="estado_salud" name="estado_salud" required>
             <option value="Buena">Buena</option>
             <option value="Regular">Regular</option>
             <option value="Mala">Mala</option>
         </select>
-        <label for="caidas">30 - Se ha caido alguna vez en el ultimo año?</label>
-        <select id="caidas" name="caidas" required>
-            <option value="Si">Si</option><!-- movilidad -->
-            <option value="No">No</option>
-        </select>
-        <!-- HASTA ACA LLEGAMOS CON LAS PREGUNTAS -->
-        <label for="estado_salud">31 - ¿Cual es su autopercepcion de su estado de salud en general?</label>
-        <select id="estado_salud" name="estado_salud" required>
-            <option value="Excelente">Excelente</option>
-            <option value="Muy Bueno">Muy Bueno</option>
-            <option value="Bueno">Bueno</option>
-            <option value="Regular">Regular</option>
-            <option value="Malo">Malo</option>
-        </select>
-        <label for="dolor">32 - Tiene algun dolor que lo acompañe cronica, si es asi que tan intenso es:</label>
+
+        <label for="dolor">27 - Presencia de dolor:</label>
         <select id="dolor" name="dolor" required>
             <option value="Sin dolor">Sin dolor</option>
             <option value="Bajo">Bajo</option>
             <option value="Moderado">Moderado</option>
             <option value="Severo">Severo</option>
         </select>
-        <label for="problemas_equilibrio">33 - Usted tiene o ha tenido problemas de equilibrio...</label>
+
+        <label for="problemas_equilibrio">28 - Usted tiene o ha tenido problemas de equilibrio...</label>
         <select id="problemas_equilibrio" name="problemas_equilibrio" required>
             <option value="Nunca">Nunca</option>
             <option value="A veces">A veces</option>
             <option value="Frecuentemente">Frecuentemente</option>
         </select>
-        <label for="test_silla">34 - Test de la silla: calcule la cantidad de veces que puede levantarse de una silla sin ayuda de las manos ni de un tercero en 1 minuto</label>
-        <input type="number" id="test_silla" name="test_silla" min="0" required>
-        <label for="tiempo_caminar_promedio">35 - Test de la caminata: con la ayuda de un familiar o un cuidador tome el tiempo en segundos que le lleva caminar 2.4mt</label>
-        <input type="number" id="tiempo_caminar_promedio" name="tiempo_caminar_promedio" min="0" required>
-        <label for="memoria">36 - Autopercepcion de memoria. ¿Usted diria que su memoria es...</label>
+
+        <label for="silla">29 - Test de la silla (Medir el tiempo en que tarda en levantarse y sentarse sin ayuda de las
+            manos 5 veces seguidas, expresar el tiempo en segundos). Si no puede hacerse, conteste 0:</label>
+        <input type="number" id="silla" name="silla" min="0" required>
+
+        <label for="memoria">30 - Autopercepción de memoria. ¿Usted diría que su memoria es...</label>
         <select id="memoria" name="memoria" required>
             <option value="Excelente">Excelente</option>
-            <option value="Muy Bueno">Muy Bueno</option>
+            <option value="Buena">Buena</option>
+            <option value="Normal">Normal</option>
+            <option value="Mala">Mala</option>
+        </select>
+
+        <label for="sueño">31 - ¿Cómo piensa que es su sueño por las noches?</label>
+        <select id="sueño" name="sueño" required>
             <option value="Bueno">Bueno</option>
-            <option value="Regular">Regular</option>
             <option value="Malo">Malo</option>
         </select>
-        <label for="suenio">37 - ¿Como piensa que es su sueño por las noches?</label>
-        <select id="suenio" name="suenio" required>
-            <option value="Muy Bueno">Muy Bueno</option>
-            <option value="Bueno">Bueno</option>
-            <option value="Malo">Malo</option>
-            <option value="Muy Malo">Muy Malo</option>
-        </select>
-        <label for="soledad">38 - ¿Se siente solo?</label>
+
+        <label for="soledad">32 - ¿Se siente solo?</label>
         <select id="soledad" name="soledad" required>
             <option value="Nunca o casi nunca">Nunca o casi nunca</option>
             <option value="A veces">A veces</option>
             <option value="Muy frecuente o siempre">Muy frecuente o siempre</option>
         </select>
-        <label for="fatigabilidad_1">39 - Siente que su sueño en la ultima semana fue insatisfactorio</label>
-        <select id="fatigabilidad_1" name="fatigabilidad_1" required>
-            <option value="No">No</option>
-            <option value="Si">Si</option>
+
+        <label for="uso_redes">33 - ¿Cómo describiría su uso de redes sociales?</label>
+        <select id="uso_redes" name="uso_redes" required>
+            <option value="Alto">Alto</option>
+            <option value="Promedio">Promedio</option>
+            <option value="Bajo">Bajo</option>
         </select>
-        <label for="fatigabilidad_2">40 - Le ha costado iniciar su dia en la ultima semana</label>
-        <select id="fatigabilidad_2" name="fatigabilidad_2" required>
-            <option value="No">No</option>
-            <option value="Si">Si</option>
-        </select>
-        <label for="usa_internet_email">41 - Usa redes sociales?</label>
-        <select id="usa_internet_email" name="usa_internet_email" required>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-        </select>
-        <label for="tiene_celular">42 - Usa telefono celular?</label>
-        <select id="tiene_celular" name="tiene_celular" required>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
-        </select>
-        <label for="soporte_social">43 - Usted diria que su soporte social es?</label>
+
+        <label for="soporte_social">34 - Usted diría que su soporte social es...</label>
         <select id="soporte_social" name="soporte_social" required>
             <option value="Alto">Alto</option>
             <option value="Bajo">Bajo</option>
         </select>
-        <!-- Seccion 4: Estado Cognitivo (Mini-Cog) -->
-        <h2>A continuacion, le vamos a aplicar una prueba rapida para detectar problemas de memoria.</h2>
-        <h3>La prueba se llama Mini-Cog©️ y es una herramienta muy util y facil de aplicar para valorar la funcion cognitiva y la posible aparicion de demencia. Requiere ser realizado por otra persona.</h3>
-        <label for="repeticion_palabras">44 - Se le enunciaran tres palabras no relacionadas entre si al participante y se le pedira que las repita y las recuerde</label>
+
+        <!-- Sección 4: Estado Cognitivo (Mini-Cog) -->
+        <h2>Estado Cognitivo (Mini-Cog)</h2>
+
+        <label for="repeticion_palabras">35 - Enunciado de 3 palabras no relacionadas (se le enunciarán tres palabras no
+            relacionadas entre sí al participante y se le pedirá que las repita y las recuerde):</label>
         <select id="repeticion_palabras" name="repeticion_palabras" required>
-            <option value="Si">Si</option>
-            <option value="No">No</option>
+            <option value=1>SI</option>
+            <option value=0>NO</option>
         </select>
-        <label for="dibujo_reloj">45 - Test del reloj: dibuje la esfera de un reloj analogico y que coloque correctamente las manecillas de acuerdo a la hora correspondiente, por ejemplo las 11:10:</label>
+
+        <label for="dibujo_reloj">36 - Test del reloj (Se le pedirá al participante que dibuje la esfera de un reloj
+            analógico y que coloque correctamente las manecillas de acuerdo a la hora correspondiente, por ejemplo las
+            11:10):</label>
         <select id="dibujo_reloj" name="dibujo_reloj" required>
-            <option value="Reloj normal">Reloj normal</option>
-            <option value="Reloj anormal">Reloj anormal</option>
+            <option value=2>Reloj normal</option>
+            <option value=0>Reloj anormal</option>
         </select>
-        <label for="repeticion_puntuacion">46 - Repeticion de las palabras: Se le pedira a la persona que repita las palabras que se le proporcionaron al inicio del ejercicio, se puntuara de acuerdo a cuantas pueda repetir:</label>
+
+        <label for="repeticion_puntuacion">37 - Repetición de las palabras (Se le pedirá a la persona que repita las
+            palabras que se le proporcionaron al inicio del ejercicio, se puntuará de acuerdo a cuántas pueda
+            repetir):</label>
         <select id="repeticion_puntuacion" name="repeticion_puntuacion" required>
             <option value="0">0 palabras</option>
             <option value="1">1 palabra</option>
             <option value="2">2 palabras</option>
             <option value="3">3 palabras</option>
         </select>
-        <!-- Seccion 5: Test de Cribado para Depresion -->
-        <h2>Estado de animo</h2>
-        <label for="depresion">47 - De los siguientes enunciados, ¿cuales describen mejor su situacion en las ultimas 2 semanas? (Puede seleccionar varias opciones):</label>
+
+        <!-- <label for="puntuacion_global">37 - Puntuación global (del 0 al 5):</label> DEBE ESTAR EN UNA FUNCION!!!
+        SI ES 3,4 Ó 5 BAJO RIESGO DE DEMENCIA
+        0,1 Ó 2 ALTO RIESGO DE DEMENCIA
+        <input type="number" id="puntuacion_global" name="puntuacion_global" min="0" max="5" required> -->
+
+        <!-- Sección 5: Test de Cribado para Depresión -->
+        <h2>Test de Cribado para Depresión</h2>
+
+        <label for="depresion">38 - De los siguientes enunciados, ¿cuáles describen mejor su situación en las últimas 2
+            semanas? (Puede seleccionar varias opciones):</label>
         <div id="depresion" style="display: flex; flex-wrap: wrap; gap: 20px;">
             <div>
-                <input type="checkbox" name="depresion" value="Tengo poco apetito">Tengo poco apetito<br>
-                <input type="checkbox" name="depresion" value="No puedo quitarme la tristeza">No puedo quitarme la tristeza<br>
-                <input type="checkbox" name="depresion" value="Tengo dificultades para concentrarme en lo que hago">Tengo dificultades para concentrarme en lo que hago<br>
-                <input type="checkbox" name="depresion" value="Me senti deprimido">Me senti deprimido<br>
-                <input type="checkbox" name="depresion" value="Duermo y no descanso">Duermo y no descanso<br>
-                <input type="checkbox" name="depresion" value="Me siento triste">Me siento triste<br>
-                <input type="checkbox" name="depresion" value="No puedo seguir adelante">No puedo seguir adelante<br>
-                <input type="checkbox" name="depresion" value="Nada me hace feliz">Nada me hace feliz<br>
-                <input type="checkbox" name="depresion" value="Siento que soy una mala persona">Siento que soy una mala persona<br>
-                <input type="checkbox" name="depresion" value="He perdido el interes en mis actividades ordinarias">He perdido el interes en mis actividades ordinarias<br>
+                <input type="checkbox" name="depresion[]" value="Tengo poco apetito">Tengo poco apetito<br>
+                <input type="checkbox" name="depresion[]" value="No puedo quitarme la tristeza">No puedo quitarme la
+                tristeza<br>
+                <input type="checkbox" name="depresion[]" value="Tengo dificultades para concentrarme en lo que hago">Tengo
+                dificultades para concentrarme en lo que hago<br>
+                <input type="checkbox" name="depresion[]" value="Me sentí deprimido">Me sentí deprimido<br>
+                <input type="checkbox" name="depresion[]" value="Duermo y no descanso">Duermo y no descanso<br>
+                <input type="checkbox" name="depresion[]" value="Me siento triste">Me siento triste<br>
+                <input type="checkbox" name="depresion[]" value="No puedo seguir adelante">No puedo seguir adelante<br>
+                <input type="checkbox" name="depresion[]" value="Nada me hace feliz">Nada me hace feliz<br>
+                <input type="checkbox" name="depresion[]" value="Siento que soy una mala persona">Siento que soy una
+                mala persona<br>
+                <input type="checkbox" name="depresion[]" value="He perdido el interés en mis actividades ordinarias">He
+                perdido el interés en mis actividades ordinarias<br>
             </div>
             <div>
-                <input type="checkbox" name="depresion" value="Duermo mucho mas que lo habitual">Duermo mucho mas que lo habitual<br>
-                <input type="checkbox" name="depresion" value="Siento que me muevo muy lento">Siento que me muevo muy lento<br>
-                <input type="checkbox" name="depresion" value="Me siento agitado (intranquilo)">Me siento agitado (intranquilo)<br>
-                <input type="checkbox" name="depresion" value="Siento deseos de estar muerto">Siento deseos de estar muerto<br>
-                <input type="checkbox" name="depresion" value="Quiero hacerme dano">Quiero hacerme dano<br>
-                <input type="checkbox" name="depresion" value="Me siento cansado todo el tiempo">Me siento cansado todo el tiempo<br>
-                <input type="checkbox" name="depresion" value="Estoy a disgusto conmigo mismo">Estoy a disgusto conmigo mismo<br>
-                <input type="checkbox" name="depresion" value="He perdido peso sin buscarlo">He perdido peso sin buscarlo<br>
-                <input type="checkbox" name="depresion" value="Me cuesta mucho trabajo dormir">Me cuesta mucho trabajo dormir<br>
-                <input type="checkbox" name="depresion" value="Es dificil concentrarme en las cosas importantes">Es dificil concentrarme en las cosas importantes<br>
+                <input type="checkbox" name="depresion[]" value="Duermo mucho más que lo habitual">Duermo mucho más que
+                lo habitual<br>
+                <input type="checkbox" name="depresion[]" value="Siento que me muevo muy lento">Siento que me muevo muy
+                lento<br>
+                <input type="checkbox" name="depresion[]" value="Me siento agitado (intranquilo)">Me siento agitado
+                (intranquilo)<br>
+                <input type="checkbox" name="depresion[]" value="Siento deseos de estar muerto">Siento deseos de estar
+                muerto<br>
+                <input type="checkbox" name="depresion[]" value="Quiero hacerme daño">Quiero hacerme daño<br>
+                <input type="checkbox" name="depresion[]" value="Me siento cansado todo el tiempo">Me siento cansado
+                todo el tiempo<br>
+                <input type="checkbox" name="depresion[]" value="Estoy a disgusto conmigo mismo">Estoy a disgusto
+                conmigo mismo<br>
+                <input type="checkbox" name="depresion[]" value="He perdido peso sin buscarlo">He perdido peso sin
+                buscarlo<br>
+                <input type="checkbox" name="depresion[]" value="Me cuesta mucho trabajo dormir">Me cuesta mucho trabajo
+                dormir<br>
+                <input type="checkbox" name="depresion[]" value="Es difícil concentrarme en las cosas importantes">Es
+                difícil concentrarme en las cosas importantes<br>
             </div>
         </div>
-        <h2>Actividades fisicas</h2>
-        <h3>Las siguientes preguntas se refieren a la cantidad de actividad fisica semanal que usted realiza</h3>
-        <label for="actividad_fisica_1">48 - ¿Cuántas veces a la semana realiza actividad fisica vigorosa? (jugar deportes como futbol o tenis, nadar rapido o correr)</label>
-        <select id="actividad_fisica_1" name="actividad_fisica_1" required>
-            <option value="Mas de 1">Mas de 1</option>
-            <option value="1 vez">1 vez</option>
-            <option value="entre 1 y 3">entre 1 y 3</option>
-            <option value="casi nunca o nunca">casi nunca o nunca</option>
-        </select>
-        <label for="actividad_fisica_2">49 - ¿Cuántas veces a la semana realiza actividad fisica moderada? (caminar rapido, andar en bicicleta a un ritmo tranquilo, bailar o hacer tareas domesticas como barrer o cortar el pasto)</label>
-        <select id="actividad_fisica_2" name="actividad_fisica_2" required>
-            <option value="Mas de 1">Mas de 1</option>
-            <option value="1 vez">1 vez</option>
-            <option value="entre 1 y 3">entre 1 y 3</option>
-            <option value="casi nunca o nunca">casi nunca o nunca</option>
-        </select>
-        <label for="actividad_fisica_3">50 - ¿Cuántas veces a la semana realiza actividad fisica suave? (caminar despacio, estirarse, hacer tareas domesticas ligeras, o estar de pie)</label>
-        <select id="actividad_fisica_3" name="actividad_fisica_3" required>
-            <option value="Mas de 1">Mas de 1</option>
-            <option value="1 vez">1 vez</option>
-            <option value="entre 1 y 3">entre 1 y 3</option>
-            <option value="casi nunca o nunca">casi nunca o nunca</option>
-        </select>
+
         <br>
         <button type="submit" class="login-button">Enviar</button>
         </br>
+
     </form>
-    <!-- Boton de Logout -->
+
+    <!-- Botón de Logout -->
     <form action="/logout" method="post">
-        <button type="submit" class="logout-button">Inicio</button>
+        <button type="submit" class="logout-button">inicio</button>
     </form>
+
 </div>
 </body>
 </html>
