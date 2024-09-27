@@ -1,9 +1,10 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash, check_password_hash
 
+# Definir la clase Base
 Base = declarative_base()
 
 # Crear un motor de base de datos usando SQLite y el archivo 'responses.db'
@@ -12,7 +13,6 @@ engine = create_engine('sqlite:///responses.db')
 # Crear un generador de sesiones, atado al motor de la base de datos
 Session = sessionmaker(bind=engine)
 
-
 # Definir un modelo de usuario (tabla 'users')
 class User(Base):
     __tablename__ = 'users'
@@ -20,16 +20,11 @@ class User(Base):
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
 
-    # Relación con el modelo Response
-    responses = relationship("Response", back_populates="user")
-
-
 # Definir un modelo de respuesta (tabla 'responses')
 class Response(Base):
     __tablename__ = 'responses'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))  # Relación con el modelo User
-    user = relationship("User", back_populates="responses")
 
     # Definir todas las columnas según las preguntas del formulario de survey.html
     edad = Column(Integer, nullable=False)

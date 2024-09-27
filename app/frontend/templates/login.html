@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página de inicio de sesión para el Algoritmo de Validación de Independencia y Autonomía (AVIA).">
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
 <body>
     <div class="login-container">
         <h1>Iniciar Sesión</h1>
-        <form method="post" class="login-form">
+
+        <!-- Mostrar error si existe -->
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" action="{{ url_for('login') }}" class="login-form">
             <div class="form-group">
                 <label for="username">Usuario:</label>
                 <input type="text" id="username" name="username" required placeholder="Introduce tu usuario">

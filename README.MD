@@ -33,7 +33,7 @@ Las dependencias para el frontend están listadas en `frontend/requirements.txt`
 
 1. **Navega a la carpeta del backend:**
     ```bash
-    cd backend
+    cd app
     ```
 
 2. **Instala las dependencias:**
