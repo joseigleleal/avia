@@ -5,20 +5,20 @@ FROM python:3.9
 WORKDIR /app
 
 # Copiar el archivo de requisitos
-COPY app/requirements.txt ./backend/requirements.txt
+COPY app/requirements.txt ./app/requirements.txt
 
 # Instalar dependencias
 RUN pip install --no-cache-dir -r app/requirements.txt
 
 # Copiar todo el código al contenedor
-COPY app/ ./backend/
+COPY . .
 
 # Copiar los archivos estáticos y templates al contenedor
-COPY app/frontend/static ./frontend/static
-COPY app/frontend/templates ./frontend/templates
+#COPY app/frontend/static ./frontend/static
+#COPY app/frontend/templates ./frontend/templates
 
 # Exponer el puerto
 EXPOSE 5001
 
 # Comando para iniciar la aplicación
-CMD ["python", "backend/app.py"]
+CMD ["python", "app/app.py"]

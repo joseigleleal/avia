@@ -16,7 +16,7 @@
         <div class="error">{{ error }}</div>
         {% endif %}
 
-        <form method="post" action="{{ url_for('login') }}" class="login-form">
+        <form method="post" action="{{ url_for('login_page') }}" class="login-form">
             <div class="form-group">
                 <label for="username">Usuario:</label>
                 <input type="text" id="username" name="username" required placeholder="Introduce tu usuario">
@@ -27,6 +27,11 @@
             </div>
             <button type="submit">Iniciar Sesión</button>
         </form>
+        <br>
+        <form action="{{ url_for('register_page') }}" method="get" class="register-form">
+            <button type="submit" class="register-button">Registrarse</button>
+        </form>
+        </br>
     </div>
 </body>
 </html>

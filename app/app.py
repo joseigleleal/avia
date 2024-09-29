@@ -23,29 +23,24 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/api/login', methods=['POST'])
-def login():
-    data = request.json
-    username = data.get('username')
-    password = data.get('password')
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('logged_in', None)  # Elimina la información de sesión
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
-    if verify_user(username, password):
-        return jsonify({"message": "Login successful"}), 200
-    else:
-        return jsonify({"message": "Invalid credentials"}), 401
 
 # Para solicitudes POST (pueden ser tanto desde un formulario como API)
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     # Si el usuario ya está logueado, redirigir a la página de encuesta
-    #if request.method == 'GET' and 'logged_in' in session and session['logged_in']:
-    #    return redirect(url_for('survey_page'))
+    if request.method == 'GET' and 'logged_in' in session and session['logged_in']:
+        return redirect(url_for('survey_page'))
 
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        response = login(username, password)
-        if isinstance(response, dict) and response.get("message") == "Login successful":
+        if verify_user(username, password):
             session['logged_in'] = True
             session['username'] = username
             flash('Inicio de sesión exitoso', 'success')
@@ -61,15 +56,33 @@ def survey():
     return render_template('survey.html')
 
 
+@app.route('/generar_json', methods=['POST'])
+def generar_json():
+    # Obtener todos los datos del formulario
+    data = {}
+    for key, value in request.form.items():
+        data[key] = value
+
+    # Puedes aplicar alguna lógica adicional antes de devolver la respuesta
+
+    # Devuelve los datos como JSON
+    return jsonify(data)
+
+
+@app.route('/register', methods=['GET'])
+def register_page():
+    return render_template('register.html')
+
+
 # Ruta para agregar un nuevo usuario
 @app.route('/api/add_user', methods=['POST'])
 def add_user():
-    data = request.json
-    username = data.get('username')
-    password = data.get('password')
+    username = request.form.get('username')
+    password = request.form.get('password')
 
     if not username or not password:
-        return jsonify({"message": "Username and password are required"}), 400
+        flash("Username and password are required", 'error')
+        return redirect(url_for('register'))  # Asegúrate de que esta vista existe
 
     hashed_password = generate_password_hash(password, method='sha256')
     user = User(username=username, password=hashed_password)
@@ -78,12 +91,15 @@ def add_user():
     try:
         session.add(user)
         session.commit()
-        return jsonify({"message": "User added successfully"}), 201
+        flash("User added successfully", 'success')
+        return redirect(url_for('login_page'))  # Redirige al login después del registro
     except Exception as e:
         session.rollback()
-        return jsonify({"message": str(e)}), 400
+        flash(str(e), 'error')  # Muestra el error
+        return redirect(url_for('register'))  # Redirige de nuevo a la página de registro
     finally:
         session.close()
+
 
 
 # Ruta para guardar una respuesta en la base de datos
